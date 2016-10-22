@@ -23,7 +23,10 @@
 
 namespace MDNP;
 
+use MDNP\Notes\NoteController;
+use MDNP\Notes\NoteProvider;
 use Silex\Application as Silex_Application;
+use Silex\Provider\TwigServiceProvider;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 
@@ -60,6 +63,18 @@ class Application extends Silex_Application
 		/* Initialize the Silex Application class. This has to be done first, so
 		 * we can work with this class in the following steps. */
 		parent::__construct($options);
+
+
+		/* Register all required providers. */
+		$this->register(new TwigServiceProvider, array(
+			'twig.path' => 'themes/'. (isset($options['theme']) ?
+			                           $options['theme'] : 'default') .'/views')
+			);
+		$this->register(new NoteProvider);
+
+
+		/* Mount all required controllers. */
+		$this->mount('', new NoteController);
 	}
 }
 
