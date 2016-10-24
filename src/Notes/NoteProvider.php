@@ -44,8 +44,15 @@ class NoteProvider implements ServiceProviderInterface
 	public function register(Container $app)
 	{
 		$app['notes.storage'] = function (Container $app) {
-			return new NoteStorage;
+			return new NoteStorage($app);
 		};
+
+		/* QueryBuilder factory for internal usage. This will be used to get a
+		 * new QueryBuilder, which is specialized for note-requests and will be
+		 * used by the NoteStorage class. */
+		$app['notes.noteqb'] = $app->factory(function (Container $app) {
+			return new NoteQueryBuilder($app['db']);
+		});
 	}
 }
 

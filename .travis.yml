@@ -4,5 +4,15 @@ php:
   - '7.0'
 
 
+before_script:
+  - psql -c "DROP DATABASE IF EXISTS mdnp;" -U postgres
+  - psql -c "create database mdnp;" -U postgres
+
 script:
   - composer install
+  - psql -U postgres mdnp < extra/mdnp.sql
+  - phpunit --configuration tests/phpunit.xml --coverage-clover=coverage.xml
+
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

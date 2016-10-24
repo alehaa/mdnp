@@ -23,6 +23,8 @@
 
 namespace MDNP\Notes;
 
+use Pimple\Container;
+
 
 /** \brief Storage class for MDNP Notes.
  *
@@ -31,6 +33,74 @@ namespace MDNP\Notes;
  */
 class NoteStorage
 {
+	private $app; ///< Copy of the calling app instance.
+
+
+	/** \brief Constructor.
+	 *
+	 *
+	 * \param $app The attached Pimple container.
+	 */
+	public function __construct(Container $app)
+	{
+		$this->app = $app;
+	}
+
+
+	/** \brief Convert JSON-encoded tags field in \p $row to an array.
+	 *
+	 * \details PostgreSQL arrays will be converted to JSON in queries build by
+	 *  \ref NoteQueryBuilder. This function will convert the tags field of \p
+	 *  row back to an array.
+	 *
+	 *
+	 * \param $row Row to be converted.
+	 *
+	 * \return Reference to \p row.
+	 */
+	protected function &convert(array &$row): array
+	{
+		$row['tags'] = json_decode($row['tags'], true);
+		return $row;
+	}
+
+
+	/** \brief Get all notes from the database that match the \p $search query.
+	 *
+	 *
+	 * \param $search The search query. See \ref NoteQueryBuilder find_commands
+	 *  for more details about the syntax.
+	 */
+	public function fetchAll(string $search): array
+	{
+		$notes = $this->app['notes.noteqb']
+		              ->search($search)
+		              ->execute()
+		              ->fetchAll();
+
+		foreach ($notes as &$note)
+			$this->convert($note);
+
+		return $notes;
+	}
+
+
+	/** \brief Get a specific note with id \p $id from the database.
+	 *
+	 *
+	 * \param $id ID of the note.
+	 */
+	public function fetch(int $id)
+	{
+		$note = $this->app['notes.noteqb']
+		             ->select('content')
+		             ->where('notes.id = :id')
+		             ->setParameters(array('id' => $id))
+		             ->execute()
+		             ->fetch();
+
+		return $this->convert($note);
+	}
 }
 
 ?>

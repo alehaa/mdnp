@@ -26,6 +26,7 @@ namespace MDNP;
 use MDNP\Notes\NoteController;
 use MDNP\Notes\NoteProvider;
 use Silex\Application as Silex_Application;
+use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
@@ -70,6 +71,7 @@ class Application extends Silex_Application
 			'twig.path' => 'themes/'. (isset($options['theme']) ?
 			                           $options['theme'] : 'default') .'/views')
 			);
+		$this->register(new DoctrineServiceProvider, $options['db.options']);
 		$this->register(new NoteProvider);
 
 
