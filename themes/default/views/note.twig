@@ -1,0 +1,80 @@
+{% extends "index.twig" %}
+
+{% set title = note.title %}
+
+
+{% block header %}
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"
+        integrity="sha256-s63qpgPYoQk+wv3U6WZqioVJrwFNBTgD4dkeegLuwvo="
+        crossorigin="anonymous"></script>
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/github.min.css"
+      integrity="sha256-3YM6A3pH4QFCl9WbSU8oXF5N6W/2ylvW0o2g+Z6TmLQ="
+      crossorigin="anonymous"/>
+
+<script type="text/javascript">
+	hljs.initHighlightingOnLoad();
+
+	function delete_note()
+	{
+		if (confirm('Are you sure to delete this note?'))
+			window.location.href = "{{ url('notes.delete', {id: note.id}) }}";
+	}
+</script>
+{% endblock %}
+
+
+{% block content %}
+<div class="row note-header">
+	<div class="no-padding-left col-md-9">
+		<h1>{{ note.title }}</h1>
+	</div>
+	<div class="no-padding-right col-md-3">
+		<div class="pull-right">
+			<a class="btn btn-default" href="{{ url('notes.edit', {id: note.id}) }}">edit</a>
+			<a class="btn btn-danger" onclick="delete_note();">delete</a>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-9 no-padding-left">
+		{{ note.content }}
+	</div>
+
+	<div class="col-md-3 no-padding-right">
+		<hr class="hidden-md hidden-lg"/>
+
+		<p>
+			<b class="text-muted">Priority</b><br/>
+			{% if note.priority == -1 %}
+				low
+			{% elseif note.priority == 0 %}
+				normal
+			{% elseif note.priority == 1 %}
+				<i class="fa fa-exclamation-circle" aria-hidden="true"></i> medium
+			{% elseif note.priority == 2 %}
+				<i class="fa fa-exclamation-circle text-danger" aria-hidden="true"></i> high
+			{% endif %}
+		</p>
+		<hr/>
+
+		{% if not note.done_until is empty %}
+		<p>
+			<b class="text-muted">Due</b><br/>
+			{{ note.done_until|date }}
+		</p>
+		<hr/>
+		{% endif %}
+
+		<p class="tags">
+			<b class="text-muted">Tags</b><br/>
+			{% for tag in note.tags %}
+				<a href="{{ url('notes.search', {s: 'tag:' ~ tag }) }}">#{{ tag }}</a><br class="hidden-xs hidden-sm"/>
+			{% endfor %}
+			</ul>
+		</p>
+	</div>
+</div>
+{% endblock %}

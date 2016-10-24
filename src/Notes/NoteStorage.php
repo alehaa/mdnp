@@ -24,6 +24,7 @@
 namespace MDNP\Notes;
 
 use Pimple\Container;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 /** \brief Storage class for MDNP Notes.
@@ -98,6 +99,11 @@ class NoteStorage
 		             ->setParameters(array('id' => $id))
 		             ->execute()
 		             ->fetch();
+
+		/* Check if note was found. Otherwise we'll return an error 404. */
+		if (empty($note))
+			throw new
+				NotFoundHttpException(sprintf('Note %d does not exist.', $id));
 
 		return $this->convert($note);
 	}

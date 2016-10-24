@@ -1,0 +1,58 @@
+{% extends "index.twig" %}
+
+{% set title = 'Overview' %}
+
+{% block content %}
+<div class="row">
+	<div class="no-padding-left col-xs-8 col-sm-4">
+		<form action="{{ url('notes.search') }}">
+			<div class="form-group">
+				<div class="input-group">
+					<div class="input-group-addon">
+						<i class="fa fa-search" aria-hidden="true"></i>
+					</div>
+					<input type="search" class="form-control" name="s" placeholder="{{ search | default('Search') }}">
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="no-padding-right col-xs-4 col-sm-offset-5 col-sm-3">
+		<div class="pull-right">
+			<a class="btn btn-success" href="{{ url('notes.new') }}">new note</a>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<table class="table table-hover table-notes">
+		<tbody>
+			{% for note in notes %}
+			<tr {% if note.expired %}class="danger"{% endif %}>
+				<td class="priority">
+					{% if note.priority >= 1 %}
+					<i class="fa fa-exclamation-circle {% if note.priority == 2 %} text-danger {% endif %}" aria-hidden="true"></i>
+					{% endif %}
+				</td>
+				<td class="clickable-cell" >
+					<a href="{{ url('notes.note', {id: note.id}) }}">
+						<b>{{ note.title }}</b><br/>
+						{% if not note.done_until is empty %}
+						<span class="text-muted">Due: {{ note.done_until | date }}</span>
+						{% endif %}
+					</a>
+				</td>
+				<td class="tags text-muted">
+					<ul class="pull-right-sm list-inline">
+						{% for tag in note.tags %}
+							<li>
+								<a href="{{ url('notes.search', {s: 'tag:' ~ tag }) }}">#{{ tag }}</a>
+							</li>
+						{% endfor %}
+					</ul>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %}

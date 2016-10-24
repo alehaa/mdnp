@@ -1,0 +1,182 @@
+/* This file is part of MDNP.
+ *
+ * MDNP is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * MDNP is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see
+ *
+ *  http://www.gnu.org/licenses/
+ *
+ *
+ * Copyright (C)
+ *  2016 Alexander Haase <ahaase@alexhaase.de>
+ */
+
+/* Color definitions.
+ *
+ * The following colors will be used in other less files and must be defined
+ * before including them.
+ */
+@color-background: #f5f5f5;
+@color-hover:      #eeeeee;
+@color-text:       #333333;
+
+
+/* Length definitions.
+ */
+@footer-height: 50px;
+
+
+/* Set background color and a top padding. The padding is required, because the
+ * content should not start before the end of the navbar.
+ */
+body {
+	background-color: @color-background;
+	padding-top: 60px;
+}
+
+
+/* Set the navbar background color. We'll use the background color, so you won't
+ * see the navbar at the top of the page, but as you scrool down, you'll see it
+ * as half-transparent banner on the top of the window.
+ */
+.navbar-fixed-top {
+	background-color: fade(@color-background, 85%);
+}
+
+
+/* The footer should be sticked to the bottom of the page, even if the page does
+ * not fill the entire browser window.
+ *
+ * Solution found at: http://stackoverflow.com/a/12701056
+ */
+.footer {
+	position: relative;
+	margin-top: -@footer-height;
+	height: @footer-height;
+	clear: both;
+	padding-top: 20px;
+}
+
+html, body {
+	height: 100%;
+}
+
+#wrap {
+	min-height: 100%;
+}
+
+#main {
+	overflow: auto;
+	padding-bottom: @footer-height;
+}
+
+
+/* Get rid of the round corners.
+ *
+ * Solution found at: http://stackoverflow.com/a/15275488
+ */
+* {
+	border-radius: 0 !important;
+}
+
+
+/* pull-right class for all except xs devices.
+ *
+ * Solution found at: http://www.bootply.com/i145F3q1Ji.
+ */
+@media (min-width: 768px) {
+	.pull-right-sm {
+		float: right;
+	}
+}
+
+
+/* Our searchbar should be aligned to the end of the container left and right.
+ * We'll use the following two helper-classes to get this behaviour at devices
+ * larger than sm only, as the searchbar would stick to the display border on
+ * smartphones if not done.
+ */
+@media (min-width: 768px) {
+	.no-padding-left {
+		padding-left: 0;
+	}
+
+	.no-padding-right {
+		padding-right: 0;
+	}
+}
+
+
+/* Set the hover-color for table-hover class, as the default value is not
+ * visible on our background color.
+ */
+.table-hover > tbody > tr:hover {
+	background-color: @color-hover;
+}
+
+
+/* Links in clickable cells should be printed as normal text with no high-
+ * lighting, no decorations, no hover and the save color as all other text.
+ */
+.clickable-cell a
+{
+	display: block;
+	text-decoration: none;
+	color: @color-text;
+}
+
+
+/* Helper classes for the notes table.
+ *
+ * * All rows should have a fixed height.
+ * * The priority column should have a fixed width, even if the column is empty.
+ * * Tags and priority should be vertical-aligned middle.
+ */
+.table-notes > tbody > tr {
+	height: 57px;
+}
+
+.table-notes .priority {
+	width: 28px;
+	vertical-align: middle;
+}
+
+.table-notes .tags {
+	vertical-align: middle;
+}
+
+.table-notes .tags ul {
+	margin: 0;
+}
+
+
+/* Tag links should be printed in the same color as normal text.
+ */
+.tags a {
+	text-decoration: none;
+	color: @color-text;
+}
+
+
+/* There should be no space around <h1> tags in the note header.
+ */
+.note-header h1 {
+	padding-top: 0;
+	margin-top: 0;
+}
+
+
+/* There should be no border and no padding around pre tags.
+ */
+pre {
+	padding: 0;
+	border: 0;
+}

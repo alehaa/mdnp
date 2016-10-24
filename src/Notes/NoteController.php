@@ -25,6 +25,7 @@ namespace MDNP\Notes;
 
 use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 
 /** \brief Register and handle routes for MDNP.
@@ -41,7 +42,70 @@ class NoteController implements ControllerProviderInterface
 	 */
 	public function connect(Application $app)
 	{
-		return $app['controllers_factory'];
+		$routes = $app['controllers_factory'];
+
+
+		/* Search interfaces.
+		 *
+		 * MDNP provides two pages with lists of notes: The root page will show
+		 * all open notes, the search page will show all notes that match the s
+		 * GET parameter. */
+
+		$routes->get('/', function () use ($app) {
+			return $app['twig']->render('notelist.twig', array(
+				'notes' => $app['notes.storage']->fetchAll('is:open'),
+				'search' => 'is:open'
+			));
+		})
+		->bind('notes.overview');
+
+		$routes->get('/search', function (Request $request) use ($app) {
+			$search = $request->get('s') ?: '';
+			return $app['twig']->render('notelist.twig', array(
+				'notes' => $app['notes.storage']->fetchAll($search),
+				'search' => $search
+			));
+		})
+		->bind('notes.search');
+
+
+		/* Note detail page.
+		 */
+
+		$routes->get('/{id}', function (int $id) use ($app) {
+			return $app['twig']->render('note.twig', array(
+				'note' => $app['notes.storage']->fetch($id)
+			));
+		})
+		->assert('id', '\d+')
+		->bind('notes.note');
+
+
+		/* Add and edit notes.
+		 *
+		 * We'll use the same editor template for both the new note editor and
+		 * editing an existing note. */
+
+		$routes->get('/new', function () use ($app) {
+		})
+		->bind('notes.new');
+
+		$routes->get('/{id}/edit', function (int $id) use ($app) {
+		})
+		->assert('id', '\d+')
+		->bind('notes.edit');
+
+
+		/* Delete a note.
+		 */
+
+		$routes->get('/{id}/delete', function (int $id) use ($app) {
+		})
+		->assert('id', '\d+')
+		->bind('notes.delete');
+
+
+		return $routes;
 	}
 }
 
