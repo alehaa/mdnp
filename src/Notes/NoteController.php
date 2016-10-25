@@ -81,25 +81,58 @@ class NoteController implements ControllerProviderInterface
 		->bind('notes.note');
 
 
-		/* Add and edit notes.
+		/* Add a note.
+		 */
+
+		$routes->get('/new', function () use ($app) {
+			return $app['twig']->render('editor.twig');
+		})
+		->bind('notes.new');
+
+		$routes->post('/new', function (Request $request) use ($app) {
+			$app['notes.storage']->add($request->get('title'),
+			                           $request->get('content'),
+			                           (int) $request->get('priority'),
+			                           $request->get('done_until'),
+			                           array_filter(explode(',',
+			                                        $request->get('tags'))));
+			return $app->redirect('/');
+		});
+
+
+		/* Edit a notes.
 		 *
 		 * We'll use the same editor template for both the new note editor and
 		 * editing an existing note. */
 
-		$routes->get('/new', function () use ($app) {
-		})
-		->bind('notes.new');
-
 		$routes->get('/{id}/edit', function (int $id) use ($app) {
+			return $app['twig']->render('editor.twig', array(
+				'note' => $app['notes.storage']->fetch($id)
+			));
 		})
 		->assert('id', '\d+')
 		->bind('notes.edit');
+
+		$routes->post('/{id}/edit',
+			function (int $id, Request $request) use ($app) {
+			$app['notes.storage']->update($id,
+			                              $request->get('title'),
+			                              $request->get('content'),
+			                              (int) $request->get('priority'),
+			                              $request->get('done_until'),
+			                              array_filter(explode(',',
+			                                           $request->get('tags'))));
+			return $app->redirect('/'.$id);
+		})
+		->assert('id', '\d+');
 
 
 		/* Delete a note.
 		 */
 
 		$routes->get('/{id}/delete', function (int $id) use ($app) {
+			$app['notes.storage']->delete($id);
+			return $app->redirect('/');
 		})
 		->assert('id', '\d+')
 		->bind('notes.delete');

@@ -1,0 +1,178 @@
+{% extends "index.twig" %}
+
+{% block header %}
+<script type="text/javascript"
+        src="//code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js"
+        integrity="sha256-mJAzKDq6kSoKqZKnA6UNLtPaIj8zT2mFnWu/GSouhgQ="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"
+        integrity="sha256-s63qpgPYoQk+wv3U6WZqioVJrwFNBTgD4dkeegLuwvo="
+        crossorigin="anonymous"></script>
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/github.min.css"
+      integrity="sha256-3YM6A3pH4QFCl9WbSU8oXF5N6W/2ylvW0o2g+Z6TmLQ="
+      crossorigin="anonymous"/>
+
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"
+        integrity="sha256-vT9X0tmmfKfNTg0U/Iv0rM9mhu8LA0MaDFrzIflHN9A="
+        crossorigin="anonymous"></script>
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css"
+      integrity="sha256-umMZCcE/LUcJ3F3V/D6NmvQxdm3OWtRMiMApkNnDIOw="
+      crossorigin="anonymous"/>
+
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/moment-with-locales.min.js"
+        integrity="sha256-K+AZsAFjiBd4piqBmFzaxDsiQiHfREubm1ExNGW1JIA="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/js/bootstrap-datetimepicker.min.js"
+        integrity="sha256-I8vGZkA2jL0PptxyJBvewDVqNXcgIhcgeqi+GD/aw34="
+        crossorigin="anonymous"></script>
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker.min.css"
+      integrity="sha256-IihK1cRp3mOP+uJ2NIWC4NK60QT0nPwLDHyh1ekT5/w="
+      crossorigin="anonymous"/>
+
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"
+        integrity="sha256-tQ3x4V2JW+L0ew/P3v2xzL46XDjEWUExFkCDY0Rflqc="
+        crossorigin="anonymous"></script>
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"
+      integrity="sha256-uKEg9s9/RiqVVOIWQ8vq0IIqdJTdnxDMok9XhiqnApU="
+      crossorigin="anonymous" />
+
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/jquery.ns-autogrow/1.1.6/jquery.ns-autogrow.min.js"
+        integrity="sha256-71S1rakRcM3pYzSLPh7DdX722vDmSBxlkmosxPMF4D4="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+	if (typeof hljs != 'undefined')
+		marked.setOptions({
+			highlight: function (code, lang) {
+				if (hljs.getLanguage(lang))
+					return hljs.highlight(lang, code).value;
+				else
+					console.log(code);
+			}
+		});
+
+	function edit() {
+		$('#content').data('markdown').hidePreview();
+		$('#tab_edit').attr('class', 'active');
+		$('#tab_preview').attr('class', '');
+	}
+
+	function preview() {
+		$('#content').data('markdown').showPreview();
+		$('#tab_edit').attr('class', '');
+		$('#tab_preview').attr('class', 'active');
+	}
+
+	function abort_edit()
+	{
+		if (confirm('Are you sure to abort?'))
+			window.location.href = "{{ url('notes.overview') }}";
+	}
+</script>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+
+<div class="row">
+	<div class="no-padding-left col-md-9">
+		<div class="form-group">
+			<input class="form-control" name="title" type="text" placeholder="Title" {% if note.title is defined %}value="{{ note.title }}"{% endif %}/>
+		</div>
+	</div>
+	<div class="no-padding-right col-md-3">
+		<div class="pull-right">
+			<a class="btn btn-default" onclick="abort_edit();">abort</a>
+			<button type="submit" class="btn btn-success">save</a>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-9 no-padding-left">
+		<ul class="nav nav-tabs">
+			<li role="presentation" class="active" id="tab_edit"><a onclick="edit();">Write</a></li>
+			<li role="presentation" id="tab_preview"><a onclick="preview();">Preview</a></li>
+		</ul>
+
+		<textarea name="content" id="content" data-provide="markdown" data-hidden-buttons="all" data-fullscreen="enable(false)" rows="10">{% if note.content is defined %}{{ note.content }}{% endif %}</textarea>
+
+		<script>
+			$('#content').autogrow({vertical: true, horizontal: false, flickering: false});
+		</script>
+	</div>
+
+	<div class="col-md-3 no-padding-right">
+		<hr class="hidden-md hidden-lg"/>
+
+		<p>
+			<b class="text-muted">Priority</b><br/>
+			<select name="priority" class="form-control">
+				<option value="-1" {% if note.priority is defined %}{% if note.priority == -1 %}selected{% endif %}{% endif %}>low</option>
+				<option value="0"  {% if note.priority is defined %}{% if note.priority == 0  %}selected{% endif %}{% else %}selected{% endif %}>normal</option>
+				<option value="1"  {% if note.priority is defined %}{% if note.priority == 1  %}selected{% endif %}{% endif %}>medium</option>
+				<option value="2"  {% if note.priority is defined %}{% if note.priority == 2  %}selected{% endif %}{% endif %}>high</option>
+			</select>
+		</p>
+		<hr/>
+
+		<p>
+			<b class="text-muted">Due</b><br/>
+
+			<div style="overflow:hidden;">
+				<div class="form-group">
+					<div id="datetimepicker">
+						<input type='hidden' class="form-control" name="done_until" id="done_until"/>
+					</div>
+				</div>
+
+				<script type="text/javascript">
+					var userLang = navigator.language || navigator.userLanguage;
+					$(function () {
+						$('#datetimepicker').datetimepicker({
+							inline: true,
+							sideBySide: false,
+							locale: userLang,
+							 {% if note.done_until is defined %}defaultDate: '{{ note.done_until | date }}',{% endif %}
+							stepping: 5,
+							keepOpen: true,
+							icons: {
+								time: 'fa fa-clock-o',
+								date: 'fa fa-calendar',
+								up: 'fa fa-chevron-up',
+								down: 'fa fa-chevron-down',
+								previous: 'fa fa-chevron-left',
+								next: 'fa fa-chevron-right'
+							}
+						});
+					});
+				</script>
+			</div>
+		</p>
+		<hr/>
+
+		<p class="tags">
+			<b class="text-muted">Tags</b><br/>
+			<input class="form-control" name="tags" type="text" data-role="tagsinput" {% if note.tags is defined %}value="{{ note.tags | join(',') }}"{% endif %}/>
+		</p>
+	</div>
+</form>
+</div>
+{% endblock %}

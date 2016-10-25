@@ -88,6 +88,15 @@ html, body {
 }
 
 
+/* Get rid of the focus-glow of input fields.
+ *
+ * Solution found at: http://stackoverflow.com/a/27778789
+ */
+.form-control:focus {
+	box-shadow: none;
+}
+
+
 /* pull-right class for all except xs devices.
  *
  * Solution found at: http://www.bootply.com/i145F3q1Ji.
@@ -179,4 +188,36 @@ html, body {
 pre {
 	padding: 0;
 	border: 0;
+}
+
+
+/* Tweaks for bootstrap-markdown editor.
+ *
+ * We don't use the toolbar of the editor, so it will be completly hidden and no
+ * border will be shown.
+ */
+.md-editor .md-header {
+	display: none !important;
+}
+
+.md-editor .md-input {
+	border: none !important;
+}
+
+.md-editor .md-preview {
+	border: none !important;
+	padding: 5px;
+}
+
+.md-editor.active {
+	box-shadow: none !important;
+}
+
+
+/* The tagsinput field should have a fixed width.
+ *
+ * Solution found at: http://stackoverflow.com/a/25341322
+ */
+.bootstrap-tagsinput {
+	width: 100% !important;
 }
