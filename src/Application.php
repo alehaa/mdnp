@@ -25,6 +25,7 @@ namespace MDNP;
 
 use MDNP\Notes\NoteController;
 use MDNP\Notes\NoteProvider;
+use SilexMarkdown\MarkdownExtension;
 use Silex\Application as Silex_Application;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\TwigServiceProvider;
@@ -72,6 +73,7 @@ class Application extends Silex_Application
 			                           $options['theme'] : 'default') .'/views')
 			);
 		$this->register(new DoctrineServiceProvider, $options['db.options']);
+		$this->register(new MarkdownExtension());
 		$this->register(new NoteProvider);
 
 
