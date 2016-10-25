@@ -69,9 +69,8 @@ class Application extends Silex_Application
 
 		/* Register all required providers. */
 		$this->register(new TwigServiceProvider, array(
-			'twig.path' => 'themes/'. (isset($options['theme']) ?
-			                           $options['theme'] : 'default') .'/views')
-			);
+			'twig.path' => 'themes/'.($options['theme'] ?? 'default').'/views'
+		));
 		$this->register(new DoctrineServiceProvider, $options['db.options']);
 		$this->register(new MarkdownExtension());
 		$this->register(new NoteProvider);
