@@ -45,9 +45,9 @@ class Application extends Silex_Application
 	 *  modules.
 	 *
 	 *
-	 * \param $options Option array.
+	 * \param array $values Predefined values for \ref Application.
 	 */
-	public function __construct(array $options = array())
+	public function __construct(array $values = array())
 	{
 		/* Silex catches exceptions that are thrown from within a request /
 		 * response cycle. However, it does not catch PHP errors and notices.
@@ -63,19 +63,51 @@ class Application extends Silex_Application
 
 		/* Initialize the Silex Application class. This has to be done first, so
 		 * we can work with this class in the following steps. */
-		parent::__construct($options);
+		parent::__construct($values);
 
 
-		/* Register all required providers. */
+		/*
+		 * Register all required providers.
+		 */
+
+		/* Twig */
 		$this->register(new TwigServiceProvider, array(
-			'twig.path' => 'themes/'.($options['theme'] ?? 'default').'/views'
+			'twig.path' => $this->get_twig_viewpath()
 		));
-		$this->register(new DoctrineServiceProvider, $options['db.options']);
+
+		/* Doctrine ORM. */
+		$this->register(new DoctrineServiceProvider);
+
+		/* Note provider. */
 		$this->register(new NoteProvider);
 
 
-		/* Mount all required controllers. */
+		/*
+		 * Mount all required controllers.
+		 */
 		$this->mount('', new NoteController);
+	}
+
+
+	/** \brief Return the location of twig views.
+	 *
+	 * \details Twig requires a path where to find the view files. Instead of
+	 *  static setting this path, we allow the user to define a theme name, so
+	 *  he may switch the theme dynamically. Twig must not get this path until
+	 *  templates are rendered. Otherwise the user is not able to define the
+	 *  theme after the constructor has been called, so we'll pack it into a
+	 *  callable.
+	 *
+	 *
+	 * \return callable A callable method to get the current twig views path.
+	 */
+	private function get_twig_viewpath(): callable
+	{
+		return function () {
+			/* If no theme has been defined by the user, the default theme will
+			 * be used. */
+			return 'themes/'.($this['theme'] ?? 'default').'/views';
+		};
 	}
 }
 
