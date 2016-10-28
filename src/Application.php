@@ -23,6 +23,7 @@
 
 namespace MDNP;
 
+use Lokhman\Silex\Provider\ConfigServiceProvider;
 use MDNP\Notes\NoteController;
 use MDNP\Notes\NoteProvider;
 use Silex\Application as Silex_Application;
@@ -69,6 +70,11 @@ class Application extends Silex_Application
 		/*
 		 * Register all required providers.
 		 */
+
+		/* Config */
+		$this->register(new ConfigServiceProvider(__DIR__ . '/../config', array(
+			'%root%' => __DIR__ . '/..'
+		)));
 
 		/* Twig */
 		$this->register(new TwigServiceProvider, array(

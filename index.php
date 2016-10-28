@@ -28,15 +28,6 @@ use MDNP\Application;
 
 
 $app = new Application;
-
-$app['db.options'] = array(
-	'driver'   => 'pdo_pgsql',
-	'dbname' => 'mdnp',
-	'user' => 'mdnp',
-	'host' => null
-);
-
-
 $app->run();
 
 
