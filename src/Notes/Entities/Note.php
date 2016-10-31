@@ -76,6 +76,13 @@ class Note
 	 */
 	protected $deadline = null;
 
+	/** \brief Status of note.
+	 *
+	 *
+	 * @Column(type="string", length=8)
+	 */
+	protected $status = 'open';
+
 	/** \brief tags associated with the note.
 	 *
 	 *
@@ -90,13 +97,6 @@ class Note
 	 * @Column(type="datetimetz")
 	 */
 	protected $created_at;
-
-	/** \brief Status of note.
-	 *
-	 *
-	 * @Column(type="string", length=8)
-	 */
-	protected $status = 'open';
 
 	/** \brief Date & time of the last changeset of this note.
 	 *
@@ -240,6 +240,7 @@ class Note
 		return $this;
 	}
 
+
 	/** \brief Check if note is expired.
 	 *
 	 *
@@ -252,6 +253,31 @@ class Note
 			return false;
 
 		return ($this->deadline < (new DateTime('now')));
+	}
+
+
+	/** \brief Get the status of the note.
+	 *
+	 *
+	 * \return string The notes status.
+	 */
+	public function getStatus(): string
+	{
+		return $this->status;
+	}
+
+
+	/** \brief Set the notes status.
+	 *
+	 *
+	 * \param string $status The new status.
+	 *
+	 * \return \ref Note Reference to this \ref Note.
+	 */
+	public function setStatus(string $status): self
+	{
+		$this->status = $status;
+		return $this;
 	}
 
 

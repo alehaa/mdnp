@@ -157,7 +157,7 @@ class NoteController implements ControllerProviderInterface
 			$this->setNoteValues($note, $request);
 			$this->updateNoteTags($note, $request, $app);
 
-			$app['orm.em']->persist();
+			$app['orm.em']->persist($note);
 			$app['orm.em']->flush();
 
 			return $app->redirect('/');
@@ -189,6 +189,17 @@ class NoteController implements ControllerProviderInterface
 			return $app->redirect('/'.$id);
 		})
 		->assert('id', '\d+');
+
+		$routes->get('/{id}/edit/status/{status}',
+		              function (int $id, string $status) use ($app) {
+			$note = $app['notes']->find($id);
+			$note->setStatus($status);
+			$app['orm.em']->flush();
+
+			return $app->redirect('/'.$id);
+		})
+		->assert('id', '\d+')
+		->bind('notes.edit.status');
 
 
 		/* Delete a note.

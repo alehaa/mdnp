@@ -75,6 +75,19 @@
 			{% endfor %}
 			</ul>
 		</p>
+		<hr/>
+
+		<p>
+			<div class="pull-right">
+				{% if note.status == 'open' %}
+					<a class="btn btn-info" href="{{ url('notes.edit.status', {id: note.id, status: 'closed'}) }}">close</a>
+				{% else %}
+					<a class="btn btn-info" href="{{ url('notes.edit.status', {id: note.id, status: 'open'}) }}">re-open</a>
+				{% endif %}
+			</div>
+			<b class="text-muted">Status</b><br/>
+			{{ note.status }}
+		</p>
 	</div>
 </div>
 {% endblock %}
