@@ -24,14 +24,14 @@
 namespace MDNP\Notes\Entities;
 
 use DateTime;
-use PHPUnit\Framework\TestCase;
+use MDNP\AppTestCase;
 use RuntimeException;
 use TypeError;
 
 
 /** \brief Test cases for \ref Tag.
  */
-class NoteTest extends TestCase
+class NoteTest extends AppTestCase
 {
 	/** \brief Check if \ref Note automatically sets the created_at value.
 	 */
@@ -52,6 +52,19 @@ class NoteTest extends TestCase
 
 		$note = new Note;
 		$note->getId();
+	}
+
+
+	/** \brief Check if the note in the database has an ID set.
+	 */
+	public function testHasId()
+	{
+		$note = new Note;
+		$note->setTitle('test');
+		$this->app['orm.em']->persist($note);
+		$this->app['orm.em']->flush();
+
+		$this->assertNotEquals($note->getId(), null);
 	}
 
 

@@ -23,13 +23,13 @@
 
 namespace MDNP\Notes\Entities;
 
-use PHPUnit\Framework\TestCase;
+use MDNP\AppTestCase;
 use TypeError;
 
 
 /** \brief Test cases for \ref Tag.
  */
-class TagTest extends TestCase
+class TagTest extends AppTestCase
 {
 	/** \brief Check if \ref Tag constructor sets the tag name.
 	 */
@@ -57,5 +57,17 @@ class TagTest extends TestCase
 
 		$tag = new Tag('foo');
 		$tag->getId();
+	}
+
+
+	/** \brief Check if the tag in the database has an ID set.
+	 */
+	public function testTagHasId()
+	{
+		$tag = new Tag('test123');
+		$this->app['orm.em']->persist($tag);
+		$this->app['orm.em']->flush();
+
+		$this->assertNotEquals($tag->getId(), null);
 	}
 }

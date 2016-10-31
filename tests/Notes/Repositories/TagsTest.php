@@ -21,7 +21,7 @@
  *  2016 Alexander Haase <ahaase@alexhaase.de>
  */
 
-namespace MDNP\Notes\Entities;
+namespace MDNP\Notes\Repositories;
 
 use MDNP\AppTestCase;
 
@@ -73,19 +73,5 @@ class TagsTest extends AppTestCase
 	public function testFindOrCreate2()
 	{
 		$this->findOrCreate();
-	}
-
-
-	/** \brief Check if the tag in the database has an ID set.
-	 */
-	public function testTagHasId()
-	{
-		$tag = $this->app['orm.em']
-		            ->getRepository('MDNP\Notes\Entities\Tag')
-		            ->findOrCreate('hello1234');
-		$this->app['orm.em']
-		     ->flush();
-
-		$this->assertNotEquals($tag->getId(), null);
 	}
 }
