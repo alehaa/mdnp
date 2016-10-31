@@ -21,11 +21,17 @@
  *  2016 Alexander Haase <ahaase@alexhaase.de>
  */
 
-require_once "vendor/autoload.php";
-
+namespace MDNP;
 
 use MDNP\Application;
+use PHPUnit\Framework\TestCase;
 
 
-$app = new Application;
-$app->run();
+class ConfigTest extends TestCase
+{
+	public function testConfigLoad()
+	{
+		$app = new Application;
+		$this->assertEquals($app['theme'], 'default');
+	}
+}

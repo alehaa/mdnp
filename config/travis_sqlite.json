@@ -1,0 +1,7 @@
+{
+	"db.options": {
+		"driver": "pdo_sqlite",
+		"path": "%root%/db.sqlite"
+	},
+	"theme": "default"
+}

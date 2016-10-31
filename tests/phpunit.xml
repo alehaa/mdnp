@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit
-	bootstrap="../vendor/autoload.php"
+	bootstrap="autoload.php"
 	colors="true"
 	convertErrorsToExceptions="true"
 	convertNoticesToExceptions="true"
@@ -12,13 +12,6 @@
 	stopOnSkipped="false"
 	stopOnRisky="false"
 >
-	<php>
-		<var name="db_name" value="dbname=mdnp"/>
-		<var name="db_host" value="localhost"/>
-		<var name="db_user" value="postgres"/>
-		<var name="db_pass" value=""/>
-	</php>
-
 	<testsuites>
 		<testsuite name="Test Suite">
 			<directory>./</directory>

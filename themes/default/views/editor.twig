@@ -139,7 +139,7 @@
 			<div style="overflow:hidden;">
 				<div class="form-group">
 					<div id="datetimepicker">
-						<input type='hidden' class="form-control" name="done_until" id="done_until"/>
+						<input type='hidden' class="form-control" name="deadline"/>
 					</div>
 				</div>
 
@@ -150,7 +150,7 @@
 							inline: true,
 							sideBySide: false,
 							locale: userLang,
-							 {% if note.done_until is defined %}defaultDate: '{{ note.done_until | date }}',{% endif %}
+							 {% if note.deadline is defined %}defaultDate: '{{ note.deadline | date }}',{% endif %}
 							stepping: 5,
 							keepOpen: true,
 							icons: {
@@ -170,7 +170,7 @@
 
 		<p class="tags">
 			<b class="text-muted">Tags</b><br/>
-			<input class="form-control" name="tags" type="text" data-role="tagsinput" {% if note.tags is defined %}value="{{ note.tags | join(',') }}"{% endif %}/>
+			<input class="form-control" name="tags" type="text" data-role="tagsinput" {% if note.tags is defined %}value="{% for tag in note.tags %}{{ tag.name }}{% if not loop.last %},{% endif %}{% endfor %}"{% endif %}/>
 		</p>
 	</div>
 </form>

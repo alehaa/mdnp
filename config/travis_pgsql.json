@@ -1,0 +1,9 @@
+{
+	"db.options": {
+		"driver": "pdo_pgsql",
+		"name": "mdnp",
+		"host": "localhost",
+		"user": "postgres"
+	},
+	"theme": "default"
+}

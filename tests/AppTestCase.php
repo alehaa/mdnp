@@ -21,11 +21,25 @@
  *  2016 Alexander Haase <ahaase@alexhaase.de>
  */
 
-require_once "vendor/autoload.php";
+namespace MDNP;
 
-
+use Silex\WebTestCase;
 use MDNP\Application;
 
 
-$app = new Application;
-$app->run();
+abstract class AppTestCase extends WebTestCase
+{
+	/** \brief Create a new MDNP \ref Application and return the instance.
+	 *
+	 *
+	 * \return The new \ref Application instance.
+	 */
+	final public function createApplication(): Application
+	{
+		$app = new Application;
+		$app['debug'] = true;
+		unset($app['exception_handler']);
+
+		return $app;
+	}
+}

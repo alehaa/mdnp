@@ -1,0 +1,8 @@
+{
+	"db.options": {
+		"driver": "pdo_pgsql",
+		"dbname": "mdnp",
+		"user": "mdnp",
+		"host": null
+	}
+}

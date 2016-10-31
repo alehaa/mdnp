@@ -21,11 +21,5 @@
  *  2016 Alexander Haase <ahaase@alexhaase.de>
  */
 
-require_once "vendor/autoload.php";
-
-
-use MDNP\Application;
-
-
-$app = new Application;
-$app->run();
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/AppTestCase.php';
