@@ -4,5 +4,6 @@
 		"dbname": "mdnp",
 		"user": "postgres",
 		"host": "localhost"
-	}
+	},
+	"theme": "default"
 }
