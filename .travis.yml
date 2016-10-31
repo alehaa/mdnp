@@ -3,15 +3,19 @@ language: php
 php:
   - '7.0'
 
+env:
+  - DB=pgsql
+  - DB=sqlite
+
 
 before_script:
-  - psql -c "DROP DATABASE IF EXISTS mdnp;" -U postgres
-  - psql -c "create database mdnp;" -U postgres
+  - if [[ "$DB" == "pgsql" ]]; then psql -c "DROP DATABASE IF EXISTS mdnp;" -U postgres; fi
+  - if [[ "$DB" == "pgsql" ]]; then psql -c "create database mdnp;" -U postgres; fi
 
 script:
   - composer install
-  - SILEX_ENV=travis vendor/bin/doctrine orm:schema-tool:create
-  - SILEX_ENV=travis phpunit --configuration tests/phpunit.xml --coverage-clover=coverage.xml
+  - SILEX_ENV=travis_$DB vendor/bin/doctrine orm:schema-tool:create
+  - SILEX_ENV=travis_$DB phpunit --configuration tests/phpunit.xml --coverage-clover=coverage.xml
 
 
 after_success:
