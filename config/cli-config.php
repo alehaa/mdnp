@@ -21,11 +21,13 @@
  *  2016 Alexander Haase <ahaase@alexhaase.de>
  */
 
-require_once "vendor/autoload.php";
+require_once 'vendor/autoload.php';
 
-
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use MDNP\Application;
 
 
 $app = new Application;
-$app->run();
+
+
+return ConsoleRunner::createHelperSet($app['orm.em']);

@@ -36,8 +36,8 @@
 				<td class="clickable-cell" >
 					<a href="{{ url('notes.note', {id: note.id}) }}">
 						<b>{{ note.title }}</b><br/>
-						{% if not note.done_until is empty %}
-						<span class="text-muted">Due: {{ note.done_until | date }}</span>
+						{% if not note.deadline is empty %}
+						<span class="text-muted">Due: {{ note.deadline | date }}</span>
 						{% endif %}
 					</a>
 				</td>
@@ -45,7 +45,7 @@
 					<ul class="pull-right-sm list-inline">
 						{% for tag in note.tags %}
 							<li>
-								<a href="{{ url('notes.search', {s: 'tag:' ~ tag }) }}">#{{ tag }}</a>
+								<a href="{{ url('notes.search', {s: 'tag:' ~ tag.name }) }}">#{{ tag.name }}</a>
 							</li>
 						{% endfor %}
 					</ul>

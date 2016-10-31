@@ -23,6 +23,7 @@
 
 namespace MDNP;
 
+use Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 use Lokhman\Silex\Provider\ConfigServiceProvider;
 use MDNP\Notes\NoteController;
 use MDNP\Notes\NoteProvider;
@@ -81,8 +82,19 @@ class Application extends Silex_Application
 			'twig.path' => $this->get_twig_viewpath()
 		));
 
-		/* Doctrine ORM. */
+		/* Doctrine ORM and DBAL (required by ORM service provider). */
 		$this->register(new DoctrineServiceProvider);
+		$this->register(new DoctrineOrmServiceProvider, array(
+			'orm.em.options' => array(
+				'mappings' => array(
+					array(
+						'type' => 'annotation',
+						'namespace' => 'MDNP\Notes\Entities',
+						'path' => __DIR__.'/Notes/Entities'
+					)
+				)
+			)
+		));
 
 		/* Note provider. */
 		$this->register(new NoteProvider);

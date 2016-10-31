@@ -21,11 +21,41 @@
  *  2016 Alexander Haase <ahaase@alexhaase.de>
  */
 
-require_once "vendor/autoload.php";
+namespace MDNP\Notes\Entities;
+
+use PHPUnit\Framework\TestCase;
+use TypeError;
 
 
-use MDNP\Application;
+/** \brief Test cases for \ref Tag.
+ */
+class TagTest extends TestCase
+{
+	/** \brief Check if \ref Tag constructor sets the tag name.
+	 */
+	public function testConstructorName()
+	{
+		$tag = new Tag('foo');
+		$this->assertEquals($tag->getName(), 'foo');
+	}
 
 
-$app = new Application;
-$app->run();
+	/** \brief Check if \ref Tag automatically sets the created_at value.
+	 */
+	public function testCreated()
+	{
+		$tag = new Tag('foo');
+		$this->assertNotEquals($tag->getCreated(), null);
+	}
+
+
+	/** \brief Check if an empty \ref Tag does not contain an ID.
+	 */
+	public function testIdException()
+	{
+		$this->expectException(TypeError::class);
+
+		$tag = new Tag('foo');
+		$tag->getId();
+	}
+}

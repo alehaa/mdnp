@@ -60,10 +60,10 @@
 		</p>
 		<hr/>
 
-		{% if not note.done_until is empty %}
+		{% if not note.deadline is empty %}
 		<p>
 			<b class="text-muted">Due</b><br/>
-			{{ note.done_until|date }}
+			{{ note.deadline|date }}
 		</p>
 		<hr/>
 		{% endif %}
@@ -71,7 +71,7 @@
 		<p class="tags">
 			<b class="text-muted">Tags</b><br/>
 			{% for tag in note.tags %}
-				<a href="{{ url('notes.search', {s: 'tag:' ~ tag }) }}">#{{ tag }}</a><br class="hidden-xs hidden-sm"/>
+				<a href="{{ url('notes.search', {s: 'tag:' ~ tag.name }) }}">#{{ tag.name }}</a><br class="hidden-xs hidden-sm"/>
 			{% endfor %}
 			</ul>
 		</p>

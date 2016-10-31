@@ -10,8 +10,8 @@ before_script:
 
 script:
   - composer install
-  - psql -U postgres mdnp < extra/mdnp.sql
-  - phpunit --configuration tests/phpunit.xml --coverage-clover=coverage.xml
+  - SILEX_ENV=travis vendor/bin/doctrine orm:schema-tool:create
+  - SILEX_ENV=travis phpunit --configuration tests/phpunit.xml --coverage-clover=coverage.xml
 
 
 after_success:
