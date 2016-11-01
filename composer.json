@@ -6,7 +6,7 @@
         "dflydev/doctrine-orm-service-provider": "^2.0",
         "lokhman/silex-config": "^2.2",
         "doctrine/lexer": "^1.0",
-        "mheap/silex-markdown": "dev-master"
+        "mheap/silex-markdown": "~2.0"
     },
 
     "autoload": {
